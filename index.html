@@ -3,57 +3,349 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Website</title>
+  <title>Siddarth Kumar – Engineering Portfolio</title>
+  <meta name="description" content="Mechanical engineering student at Purdue building robots, circuits and machines.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: Arial, sans-serif; color: #333; }
 
-    section {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 60px 20px;
-      text-align: center;
+    :root {
+      --display: "Bricolage Grotesque", system-ui, sans-serif;
+      --body: "Newsreader", Georgia, serif;
     }
 
-    .hero { background: #2c3e50; color: white; }
-    .about { background: #f9f9f9; }
-    .contact { background: #3498db; color: white; }
+    html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
 
-    h1 { font-size: 3rem; margin-bottom: 16px; }
-    h2 { font-size: 2rem; margin-bottom: 16px; }
-    p  { font-size: 1.1rem; max-width: 600px; line-height: 1.6; }
+    body {
+      font-family: var(--body);
+      font-size: 1.2rem;
+      line-height: 1.6;
+      color: #14121f;
+    }
+
+    a { color: inherit; }
+    a:focus-visible { outline: 3px solid currentColor; outline-offset: 4px; }
+
+    /* ---------- every page ---------- */
+    section {
+      min-height: 100vh;
+      min-height: 100dvh;
+      scroll-snap-align: start;
+      display: flex;
+      align-items: center;
+      padding: 4rem 5rem 4rem 7rem;
+    }
+    .inner { width: 100%; max-width: 70rem; margin: 0 auto; }
+
+    h1, h2, h3 { font-family: var(--display); font-weight: 800; letter-spacing: -.035em; }
+    h1 { font-size: clamp(3.2rem, 11vw, 9rem); line-height: .92; margin-bottom: 1.5rem; }
+    h2 { font-size: clamp(2.4rem, 6vw, 4.8rem); line-height: 1; margin-bottom: 1.5rem; }
+    .lede { font-size: 1.5rem; max-width: 36rem; }
+
+    /* page colors */
+    .hero       { background: #1b2a49; color: #ffe9a8; }
+    .about      { background: #ffe66b; }
+    .experience { background: #bff0d4; }
+    .p1         { background: #cfc7ff; }
+    .p2         { background: #ff8a6b; }
+    .p3         { background: #9fd3ff; }
+    .p4         { background: #f6c177; }
+    .skills     { background: #14121f; color: #cfc7ff; }
+    .contact    { background: #2433ff; color: #fff7d6; }
+
+    /* ---------- hero ---------- */
+    .hero .lede { margin-bottom: 0; }
+
+    /* ---------- about ---------- */
+    .about .inner { display: grid; grid-template-columns: 1.2fr .8fr; gap: 3rem; align-items: center; }
+    .about p { margin-bottom: 1rem; max-width: 36rem; }
+    .facts { list-style: none; margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: .6rem; }
+    .facts li {
+      font-family: var(--display); font-weight: 500; font-size: 1rem;
+      padding: .35rem 1rem; border: 2px solid currentColor; border-radius: 999px;
+    }
+
+    /* ---------- photo slots ---------- */
+    .photo {
+      width: 100%;
+      max-width: 32rem;
+      aspect-ratio: 4 / 3;
+      border: 3px solid currentColor;
+      border-radius: 1rem;
+      overflow: hidden;
+      justify-self: center;
+      display: grid;
+      place-items: center;
+    }
+    .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .photo--portrait { aspect-ratio: 3 / 4; max-width: 22rem; }
+    /* shown only until you add the real picture */
+    .photo.empty img { display: none; }
+    .photo.empty::after {
+      content: "Add a photo: " attr(data-file);
+      font-family: var(--display); font-weight: 500; font-size: 1rem;
+      padding: 1rem; text-align: center; opacity: .75;
+    }
+
+    /* ---------- experience ---------- */
+    .jobs { display: grid; gap: 2rem; }
+    .job { max-width: 50rem; padding-left: 1.25rem; border-left: 4px solid currentColor; }
+    .job h3 { font-size: 1.7rem; letter-spacing: -.02em; line-height: 1.15; }
+    .job .where { font-style: italic; margin-bottom: .4rem; }
+    .job p { font-size: 1.1rem; }
+
+    /* ---------- projects ---------- */
+    .project { display: grid; grid-template-columns: 1.1fr .9fr; gap: 3rem; align-items: center; }
+    .flip .photo { order: -1; }
+    .project h2 { overflow-wrap: anywhere; }
+    .project p { max-width: 34rem; margin-bottom: 1.25rem; }
+    .tags {
+      list-style: none; display: flex; flex-wrap: wrap; gap: .5rem;
+      font-style: italic; font-size: 1.05rem;
+    }
+    .tags li + li::before { content: "/"; margin-right: .5rem; opacity: .6; font-style: normal; }
+
+    /* ---------- skills ---------- */
+    .skill-groups { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; margin-top: 1rem; }
+    .skill-groups h3 { font-size: 1.5rem; letter-spacing: -.02em; margin-bottom: .75rem; }
+    .skill-groups ul { list-style: none; font-size: 1.1rem; }
+    .skill-groups li { padding: .15rem 0; }
+
+    /* ---------- contact ---------- */
+    .links { display: flex; flex-direction: column; gap: .4rem; margin-top: 2rem;
+             font-family: var(--display); font-weight: 500; font-size: 1.6rem; }
+    .links a { width: fit-content; text-underline-offset: .25em; }
+
+    /* ---------- side dots ---------- */
+    .dots { position: fixed; left: 1.75rem; top: 50%; transform: translateY(-50%); z-index: 10; mix-blend-mode: difference; color: #fff; }
+    .dots ol { list-style: none; display: flex; flex-direction: column; gap: .9rem; }
+    .dots a {
+      display: block; width: .8rem; height: .8rem; border-radius: 50%;
+      border: 2px solid currentColor; opacity: .6;
+      transition: background-color .3s, opacity .3s, transform .3s;
+    }
+    .dots a:hover, .dots a:focus-visible { opacity: 1; }
+    .dots a[aria-current="true"] { background: currentColor; opacity: 1; transform: scale(1.25); }
+
+    /* ---------- smaller screens ---------- */
+    @media (max-width: 800px) {
+      html { scroll-snap-type: y proximity; }
+      body { font-size: 1.1rem; }
+      section { padding: 5rem 1.5rem 5rem 3rem; }
+      .about .inner, .project { grid-template-columns: 1fr; gap: 2rem; }
+      .flip .photo { order: 0; }
+      .photo { max-width: 100%; }
+      .photo--portrait { max-width: 14rem; justify-self: start; }
+      .skill-groups { grid-template-columns: 1fr; gap: 1.5rem; }
+      .dots { left: .8rem; }
+      .lede { font-size: 1.25rem; }
+      .links { font-size: 1.2rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .dots a { transition: none; }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <h1 data-aos="fade-up">Hi, I'm Jane</h1>
-    <p data-aos="fade-up" data-aos-delay="200">Welcome to my personal website.</p>
+  <nav class="dots" aria-label="Pages"><ol id="dots"></ol></nav>
+
+  <!-- Hero -->
+  <section class="hero" id="home" data-title="Home">
+    <div class="inner">
+      <h1 data-aos="fade-up">Siddarth<br>Kumar</h1>
+      <p class="lede" data-aos="fade-up" data-aos-delay="200">
+        Mechanical engineering student at Purdue. I design and build robots, circuit boards and the machines that carry them.
+      </p>
+    </div>
   </section>
 
-  <!-- About Section -->
-  <section class="about">
-    <h2 data-aos="fade-right">About Me</h2>
-    <p data-aos="fade-right" data-aos-delay="200">
-      I'm a designer and developer who loves building things on the web.
-    </p>
+  <!-- About -->
+  <section class="about" id="about" data-title="About">
+    <div class="inner">
+      <div>
+        <h2 data-aos="fade-right">About me</h2>
+        <p data-aos="fade-right" data-aos-delay="150">
+          I study mechanical engineering at Purdue, with minors in electrical and computer engineering and in math, and I’m part of the Honors College.
+        </p>
+        <p data-aos="fade-right" data-aos-delay="250">
+          My favorite projects sit where mechanical design, electronics and code meet: CAD and machining on one side, circuit boards, firmware and robot learning on the other.
+        </p>
+        <ul class="facts" data-aos="fade-right" data-aos-delay="350" aria-label="Highlights">
+          <li>GPA 3.81</li>
+          <li>Dean’s List twice</li>
+          <li>National Merit</li>
+        </ul>
+      </div>
+      <!-- Your portrait goes in images/portrait.jpg -->
+      <figure class="photo photo--portrait" data-file="images/portrait.jpg" data-aos="zoom-in">
+        <img src="images/portrait.jpg" alt="Portrait of Siddarth Kumar" onerror="this.parentElement.classList.add('empty')">
+      </figure>
+    </div>
   </section>
 
-  <!-- Contact Section -->
-  <section class="contact">
-    <h2 data-aos="zoom-in">Get In Touch</h2>
-    <p data-aos="zoom-in" data-aos-delay="200">
-      Reach me at hello@mysite.com
-    </p>
+  <!-- Experience -->
+  <section class="experience" id="experience" data-title="Experience">
+    <div class="inner">
+      <h2 data-aos="fade-up">What I’m doing now</h2>
+      <div class="jobs">
+        <article class="job" data-aos="fade-up" data-aos-delay="100">
+          <h3>Test Infrastructure Engineer</h3>
+          <p class="where">purpl, Purdue’s undergraduate rocket and propulsion lab · since March 2026</p>
+          <p>I build the electronics that let the propulsion test stand measure accurately. That includes a board that converts industrial 4–20 mA sensor signals to 0–10 V for the data system, and a two-layer load cell board whose readout cancels out supply drift. I’m also planning the data acquisition setup for 20–30 analog inputs and 15 thermocouples.</p>
+        </article>
+        <article class="job" data-aos="fade-up" data-aos-delay="200">
+          <h3>Undergraduate Researcher</h3>
+          <p class="where">TRACE Lab, humanoid robotics · since October 2026</p>
+          <p>I’m helping a Booster T1 humanoid robot learn to play table tennis. The work uses reinforcement learning in Python and C++ on the PACE framework, plus collecting and analyzing the experimental data.</p>
+        </article>
+        <article class="job" data-aos="fade-up" data-aos-delay="300">
+          <h3>Computer Science Teaching Assistant</h3>
+          <p class="where">Purdue Department of Computer Science · since January 2026</p>
+          <p>I help hundreds of students with programming concepts and debugging in office hours, and I run a weekly lab of 30 students working through hands-on C exercises.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Project 1 -->
+  <section class="p1" id="pig" data-title="SMART P.I.G">
+    <div class="inner project">
+      <div>
+        <h2 data-aos="fade-right">SMART P.I.G pipeline robot</h2>
+        <p data-aos="fade-right" data-aos-delay="150">
+          A robot that crawls through pipes, designed and built from scratch: the body in Siemens NX CAD and the control logic on an ESP32. I also programmed maze-solving and obstacle-course robots that find their own way using magnetic and infrared sensors.
+        </p>
+        <ul class="tags" data-aos="fade-right" data-aos-delay="250">
+          <li>Siemens NX</li><li>ESP32</li><li>C++</li><li>Python</li>
+        </ul>
+      </div>
+      <figure class="photo" data-file="images/pig-robot.jpg" data-aos="zoom-in">
+        <img src="images/pig-robot.jpg" alt="The SMART P.I.G pipeline robot" onerror="this.parentElement.classList.add('empty')">
+      </figure>
+    </div>
+  </section>
+
+  <!-- Project 2 -->
+  <section class="p2 flip" id="drone" data-title="Delivery drone">
+    <div class="inner project">
+      <div>
+        <h2 data-aos="fade-left">Drone delivery system</h2>
+        <p data-aos="fade-left" data-aos-delay="150">
+          A drone built to drop off packages. I designed the gravity-powered hook that releases the payload, the mounts for its LiDAR sensor, and the gimbal that keeps the load steady.
+        </p>
+        <ul class="tags" data-aos="fade-left" data-aos-delay="250">
+          <li>AutoCAD</li><li>Siemens NX</li><li>LiDAR</li><li>Embedded systems</li>
+        </ul>
+      </div>
+      <figure class="photo" data-file="images/drone.jpg" data-aos="zoom-in">
+        <img src="images/drone.jpg" alt="The delivery drone with its payload hook" onerror="this.parentElement.classList.add('empty')">
+      </figure>
+    </div>
+  </section>
+
+  <!-- Project 3 -->
+  <section class="p3" id="nasa" data-title="NASA research">
+    <div class="inner project">
+      <div>
+        <h2 data-aos="fade-right">NASA Langley research</h2>
+        <p data-aos="fade-right" data-aos-delay="150">
+          I researched rover technology and nuclear power options for a Mars habitat, then presented what I found to NASA scientists and engineers.
+        </p>
+        <ul class="tags" data-aos="fade-right" data-aos-delay="250">
+          <li>Rovers</li><li>Nuclear power</li><li>Mars habitat</li>
+        </ul>
+      </div>
+      <figure class="photo" data-file="images/nasa.jpg" data-aos="zoom-in">
+        <img src="images/nasa.jpg" alt="Presenting research at NASA Langley" onerror="this.parentElement.classList.add('empty')">
+      </figure>
+    </div>
+  </section>
+
+  <!-- Project 4 -->
+  <section class="p4 flip" id="diwheel" data-title="Diwheel">
+    <div class="inner project">
+      <div>
+        <h2 data-aos="fade-left">Full-size diwheel</h2>
+        <p data-aos="fade-left" data-aos-delay="150">
+          A six-foot wooden wheel with room for a rider inside. I designed it in Fusion 360, cut and shaped the parts with a CNC router and shop machines, and tied it together with wheelchair motors and the electrical system that drives them.
+        </p>
+        <ul class="tags" data-aos="fade-left" data-aos-delay="250">
+          <li>Woodworking</li><li>Fusion 360</li><li>CNC router</li>
+        </ul>
+      </div>
+      <figure class="photo" data-file="images/diwheel.jpg" data-aos="zoom-in">
+        <img src="images/diwheel.jpg" alt="The wooden diwheel" onerror="this.parentElement.classList.add('empty')">
+      </figure>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section class="skills" id="skills" data-title="Skills">
+    <div class="inner">
+      <h2 data-aos="fade-up">What I work with</h2>
+      <div class="skill-groups">
+        <div data-aos="fade-up" data-aos-delay="100">
+          <h3>Code</h3>
+          <ul><li>Python</li><li>C and C++</li><li>MATLAB</li><li>R</li></ul>
+        </div>
+        <div data-aos="fade-up" data-aos-delay="200">
+          <h3>Design software</h3>
+          <ul><li>Siemens NX</li><li>Fusion 360</li><li>Altium Designer</li><li>Raspberry Pi</li><li>OpenRocket</li><li>Excel</li></ul>
+        </div>
+        <div data-aos="fade-up" data-aos-delay="300">
+          <h3>In the shop</h3>
+          <ul><li>CNC mill and lathe</li><li>Laser cutting</li><li>Bandsaw and drill press</li><li>Hydraulic press</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="contact" id="contact" data-title="Contact">
+    <div class="inner">
+      <h2 data-aos="zoom-in">Let’s talk</h2>
+      <p class="lede" data-aos="zoom-in" data-aos-delay="150">
+        Working on something with robots, electronics or both? Send me a note.
+      </p>
+      <p class="links" data-aos="zoom-in" data-aos-delay="250">
+        <a href="mailto:kumar847@purdue.edu">kumar847@purdue.edu</a>
+        <a href="https://www.linkedin.com/in/siddarth-ravish-kumar" target="_blank" rel="noopener">LinkedIn</a>
+      </p>
+    </div>
   </section>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-  <script>AOS.init({ duration: 800, once: true });</script>
+  <script>
+    AOS.init({
+      duration: 800,
+      once: true,
+      disable: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    });
+
+    // side dots + active page
+    const pages = [...document.querySelectorAll("section")];
+    const list = document.getElementById("dots");
+    pages.forEach(p => {
+      const li = document.createElement("li");
+      li.innerHTML = `<a href="#${p.id}" aria-label="${p.dataset.title}" title="${p.dataset.title}"></a>`;
+      list.append(li);
+    });
+    const dots = [...list.querySelectorAll("a")];
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const i = pages.indexOf(e.target);
+        dots.forEach((d, j) => d.setAttribute("aria-current", j === i ? "true" : "false"));
+      });
+    }, { threshold: 0.55 });
+    pages.forEach(p => io.observe(p));
+  </script>
 
 </body>
 </html>
